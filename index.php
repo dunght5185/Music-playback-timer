@@ -120,99 +120,108 @@
 
     <script type="text/javascript">
 
-// Set the date we're counting down to
-let countDownDate = new Date("<?php echo $time; ?>").getTime();
+        // Set the date we're counting down to
+        let countDownDate = new Date("<?php echo $time; ?>").getTime();
 
-// Time calculations for days, hours, minutes and seconds
-function calculateTime(distance) {
-    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // Time calculations for days, hours, minutes and seconds
+        function calculateTime(distance) {
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    return days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-}
-
-// Update the count down every 1 second
-let x = setInterval(function() {
-    // Get today's date and time
-    let now = new Date().getTime();
-
-    // Find the distance between now and the count down date
-    let distance = countDownDate - now;
-
-    // Output the result in an element with id="demo"
-    document.getElementById("timer").innerHTML = calculateTime(distance);
-
-    // If the count down is over, write some text 
-    if (distance < 0) {
-        clearInterval(x);
-        location = 'http://localhost:8080/';
-    }
-}, 1000);
-</script>
-
-<script type="text/javascript">
-//<![CDATA[
-$(document).ready(function(){
-    let arr =[];
-    class Song {
-        constructor(title, mp3) {
-            this.title = title;
-            this.mp3 = mp3;
+            return days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
         }
-    }
 
-    function addSongToArr(json, index, path) {
-        let song = new Song(`${json[index]}`, `http://localhost:8080/${path}/${json[index]}`);
-        arr.push(song);
-    }
+        // Update the count down every 1 second
+        let x = setInterval(function() {
+            // Get today's date and time
+            let now = new Date().getTime();
 
-    let isRelax1 = `<?php echo $isRelax ?>`;
-    let relaxJson = <?php echo json_encode($relax); ?>;
-    let volume = 0.7;
+            // Find the distance between now and the count down date
+            let distance = countDownDate - now;
 
-    let hotJson = <?php echo json_encode($hot); ?>;
+            // Output the result in an element with id="demo"
+            document.getElementById("timer").innerHTML = calculateTime(distance);
 
-    if(isRelax1 != '') {
-        let ranRelax = Math.floor(Math.random() * relaxJson.length);
-        for (let i=0; i < 15; i++) {
-            let ranRelax = Math.floor(Math.random() * relaxJson.length);
-            addSongToArr(relaxJson, ranRelax, 'relax');
-        }
-        // addSongToArr(relaxJson, ranRelax, 'relax');
-        volume = 0.15;
-    } else {
-        let ranHot = Math.floor(Math.random() * hotJson.length);
-        addSongToArr(hotJson, ranHot, 'hot');
-    }
+            // If the count down is over, write some text 
+            if (distance < 0) {
+                clearInterval(x);
+                location = 'http://localhost:8080/';
+            }
+        }, 1000);
+    </script>
 
-    console.log("volume = ", volume);
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function(){
+            let arr =[];
+            class Song {
+                constructor(title, mp3) {
+                    this.title = title;
+                    this.mp3 = mp3;
+                }
+            }
 
-    new jPlayerPlaylist({
-        jPlayer: "#jplayer",
-        cssSelectorAncestor: "#jp_container"
-    }, arr, {
-        swfPath: "../../assets/js",
-        supplied: "mp3, oga",
-        wmode: "window",
-        useStateClassSkin: true,
-        autoBlur: false,
-        smoothPlayBar: true,
-        keyEnabled: true,
-        shuffled: true,
-        playlistOptions: {
-            //autoPlay: true,
-            shuffleOnLoop: true
-        }
-    });
+            function addSongToArr(json, index, path) {
+                let song = new Song(`${json[index]}`, `http://localhost:8080/${path}/${json[index]}`);
+                arr.push(song);
+            }
 
-    setTimeout(function() {
-        document.querySelector('#jp_audio_0').volume = volume;
-    }, 2500);
-});
-//]]>
+            let isRelax1 = `<?php echo $isRelax ?>`;
+            let relaxJson = <?php echo json_encode($relax); ?>;
+            let volume = 0.7;
 
+            let hotJson = <?php echo json_encode($hot); ?>;
+
+            if(isRelax1 != '') {
+                let ranRelax = Math.floor(Math.random() * relaxJson.length);
+                for (let i=0; i < 15; i++) {
+                    let ranRelax = Math.floor(Math.random() * relaxJson.length);
+                    addSongToArr(relaxJson, ranRelax, 'relax');
+                }
+                // addSongToArr(relaxJson, ranRelax, 'relax');
+                volume = 0.15;
+            } else {
+                let ranHot = Math.floor(Math.random() * hotJson.length);
+                addSongToArr(hotJson, ranHot, 'hot');
+            }
+
+            console.log("volume = ", volume);
+
+            new jPlayerPlaylist({
+                jPlayer: "#jplayer",
+                cssSelectorAncestor: "#jp_container"
+            }, arr, {
+                swfPath: "../../assets/js",
+                supplied: "mp3, oga",
+                wmode: "window",
+                useStateClassSkin: true,
+                autoBlur: false,
+                smoothPlayBar: true,
+                keyEnabled: true,
+                shuffled: true,
+                playlistOptions: {
+                    //autoPlay: true,
+                    shuffleOnLoop: true
+                }
+            });
+
+            setTimeout(function() {
+                document.querySelector('#jp_audio_0').volume = volume;
+            }, 2500);
+        });
+        //]]>
+
+    </script>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            setTimeout(function() {
+                let playBtn = document.querySelector('.jp-controls button.jp-play');
+                playBtn.click();
+            }, 3500);
+        });
     </script>
 </body>
 </html>
